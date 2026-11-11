@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io"
 	"os"
@@ -9,7 +10,12 @@ import (
 )
 
 func main() {
-	file, error := os.Open("rom/PONG")
+	romFile := flag.String("in", " ", "input rom filepath")
+	outFile := flag.String("out", " ", "output asm filepath")
+
+	flag.Parse()
+
+	file, error := os.Open(*romFile)
 	if error != nil {
 		panic(error)
 	}
@@ -18,7 +24,7 @@ func main() {
 
 	data, _ := io.ReadAll(file)
 
-	out, err := os.Create("out.asm")
+	out, err := os.Create(*outFile)
 	if err != nil {
 		panic(err)
 	}
